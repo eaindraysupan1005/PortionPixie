@@ -4,6 +4,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import HomeScreen from './screens/HomeScreen';
 import MoodSelectorScreen from './screens/MoodSelectorScreen';
 import PotionResultScreen from './screens/PotionResultScreen';
+import FavoritePotionScreen from './screens/FavoritePotionScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -14,6 +15,7 @@ export default function App() {
         <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="MoodSelector" component={MoodSelectorScreen} />
         <Stack.Screen name="PotionResult" component={PotionResultScreen} />
+        <Stack.Screen name="FavoritePotions" component={FavoritePotionScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

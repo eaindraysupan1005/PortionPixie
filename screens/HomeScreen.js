@@ -1,15 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, Image, Dimensions } from 'react-native';
-import Animated, { FadeIn, FadeInDown, ZoomIn } from 'react-native-reanimated';
+import Animated, { FadeIn, Easing, FadeInDown, ZoomIn, withRepeat, withTiming, useSharedValue, useAnimatedStyle } from 'react-native-reanimated';
+import LottieView from 'lottie-react-native';
 
-const { width, height } = Dimensions.get('window');
 
 const quotes = [
-  "Even moonlight needs rest. Log your vibe, dear traveler.",
-  "The stars whisper secrets to those who listen to their hearts.",
-  "Every potion begins with a single spark of magic.",
-  "Your mood is the first ingredient in any magical brew.",
-  "The cauldron of life is always bubbling with possibilities.",
+  "Even moonlight needs rest. Log your vibe, dear traveler",
+  "The stars whisper secrets to those who listen to their hearts",
+  "Every potion begins with a single spark of magic",
+  "Your mood is the first ingredient in any magical brew",
+  "The cauldron of life is always bubbling with possibilities",
+  "A flicker of hope can ignite an entire constellation of dreams",
+  "Magic is the art of seeing the extraordinary in the ordinary",
+  "In the quietest moments, the universe speaks loudest",
+  "The wind carries whispers of forgotten spells to those who seek",
+  "A true magician never stops learning from the world around them",
+  "The magic you seek is always found within your own heart",
+  "With every dawn, the world is reborn, full of enchantment",
+  "To master the art of magic, one must first master the art of patience",
 ];
 
 export default function HomeScreen({ navigation }) {
@@ -20,52 +28,49 @@ export default function HomeScreen({ navigation }) {
 
   }, []);
 
+  // Animation for the button (up and down movement)
+   const buttonY = useSharedValue(0);  // Shared value for vertical movement
+
+   // Start the animation when the component mounts
+   useEffect(() => {
+     buttonY.value = withRepeat(withTiming(-20, { duration: 800 }), -1, true);
+   }, [buttonY]);
+
+   // Animated style for the button
+   const buttonAnimatedStyle = useAnimatedStyle(() => {
+     return {
+       transform: [{ translateY: buttonY.value }],
+     };
+   });
+
   return (
     <View style={styles.container}>
-      {/* Background image with soft fade-in */}
-      <Animated.View
-        entering={FadeIn.duration(2000)}
-        style={styles.background}
-      >
-        <Image
-          source={require('../assets/magical1.jpg')}
-          style={styles.backgroundImage}
-          resizeMode="cover"
-        />
-      </Animated.View>
 
-      {/* Magical sparkling overlay */}
-      <Animated.View
-        entering={ZoomIn.duration(3000).delay(500)}
-        style={styles.sparkles}
-      >
-        <Image
-          source={require('../assets/sparkles.png')} // Add a soft sparkle overlay image
-          style={styles.sparkleImage}
-          resizeMode="cover"
-        />
-      </Animated.View>
+    <Text style={styles.welcome}>
+      Welcome to
+    </Text>
 
-      {/* Quote */}
-      <Animated.Text
-        entering={FadeInDown.duration(1200).delay(1000)}
-        style={styles.quote}
-      >
-        {dailyQuote}
-      </Animated.Text>
+    <Text style={styles.title}>
+     <LottieView source={require('../assets/butterfly.json')} autoPlay loop
+           style={styles.butterfly}  />PortionPixie
+     <LottieView source={require('../assets/butterfly.json')} autoPlay loop style={styles.butterfly} />
+    </Text>
+      <Text style={styles.quote}>
+        "{dailyQuote}"
+      </Text>
+     <LottieView source={require('../assets/spark.json')} autoPlay loop style={styles.spark} />
+      <Image source={require('../assets/Portion.png')} style={styles.image}/>
 
       {/* Button */}
-      <Animated.View
-        entering={FadeInDown.duration(1200).delay(1500)}
-        style={styles.buttonContainer}
-      >
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => navigation.navigate('MoodSelector')}
-        >
-          <Text style={styles.buttonText}>✨ Log Your Mood ✨</Text>
-        </TouchableOpacity>
-      </Animated.View>
+      <View style={styles.buttonContainer}>
+              <Animated.View style={[styles.button, buttonAnimatedStyle]}>
+                <TouchableOpacity
+                  onPress={() => navigation.navigate('MoodSelector')}
+                >
+                  <Text style={styles.buttonText}>✨ Log Your Mood ✨</Text>
+                </TouchableOpacity>
+              </Animated.View>
+            </View>
     </View>
   );
 }
@@ -73,57 +78,65 @@ export default function HomeScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#0b0c2a', // Deep cosmic background
+    backgroundColor: '#FFA896',
     alignItems: 'center',
-    justifyContent: 'center',
+//    justifyContent: 'center',
     fontFamily: 'Arial',
+    paddingVertical: 30,
+    paddingHorizontal: 20,
   },
-  background: {
+  welcome: {
+    fontFamily: 'monospace',
+    fontSize: 24,
+    color: '#9B1313',
+    marginTop: 50,
+  },
+  title:{
+    fontFamily: 'serif',
+    fontSize: 35,
+    fontWeight: 800,
+    color: '#9B1313',
+    marginBottom: 20,
+  },
+  butterfly: {
+    width: 55,
+    height: 60,
+  },
+  spark: {
+    height: 130,
+    width: 300,
     position: 'absolute',
-    width: width,
-    height: height,
-  },
-  backgroundImage: {
-    width: '100%',
-    height: '100%',
-    opacity: 0.5,
-  },
-  sparkles: {
-    position: 'absolute',
-    width: width,
-    height: height,
-    opacity: 0.2,
-  },
-  sparkleImage: {
-    width: '100%',
-    height: '100%',
+    top: '35%',
   },
   quote: {
-    fontSize: 24,
-    color: '#f0e6f6',
+    fontSize: 20,
+    color: '#222',
     textAlign: 'center',
-    marginHorizontal: 30,
+    marginHorizontal: 10,
     fontFamily: 'serif',
-    textShadowColor: 'rgba(255, 215, 255, 0.8)',
-    textShadowOffset: { width: 0, height: 0 },
+    textShadowColor: 'rgba(255, 155, 135, 0.9)',
+    textShadowOffset: { width: 1, height: 2 },
     textShadowRadius: 20,
     marginBottom: 40,
   },
+ image: {
+  height: 330,
+  },
   buttonContainer: {
     position: 'absolute',
-    bottom: 80,
-    width: '80%',
+    bottom: 40,
+    width: '90%',
     alignItems: 'center',
   },
   button: {
-    backgroundColor: '#9d00ff',
+    backgroundColor: '#9B1313',
     paddingHorizontal: 40,
     paddingVertical: 18,
     borderRadius: 30,
     elevation: 10,
     shadowColor: '#fff',
     shadowOffset: { width: 0, height: 3 },
-    shadowOpacity: 0.5,
+    shadowOpacity: 0.6,
     shadowRadius: 10,
     borderWidth: 1,
     borderColor: '#fff',
