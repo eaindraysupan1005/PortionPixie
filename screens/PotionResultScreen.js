@@ -22,7 +22,7 @@ export default function PotionResultScreen({ route, navigation }) {
     require('../assets/card5.jpg'),
     require('../assets/card6.jpg'),
     require('../assets/card7.jpg'),
-    require('../assets/card3.webp'),
+    require('../assets/card0.webp'),
   ];
   const colors = [ '#ffcce3','#ffb7d5','#b9d6f2','#c7f5c0',
   '#d8c5e5','#f5e68d','#e2d8c4','#cbb4f3','#fcdde8','#f6f2ba','#c6e2f5','#d0f5dd'
