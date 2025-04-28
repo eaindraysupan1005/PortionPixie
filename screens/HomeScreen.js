@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, Image, Dimensions } from 'react-native';
 import Animated, { FadeIn, Easing, FadeInDown, ZoomIn, withRepeat, withTiming, useSharedValue, useAnimatedStyle } from 'react-native-reanimated';
 import LottieView from 'lottie-react-native';
-
+import { Audio } from 'expo-av';
+import { useFocusEffect } from '@react-navigation/native';
 
 const quotes = [
   "Even moonlight needs rest. Log your vibe, dear traveler",
@@ -22,16 +23,39 @@ const quotes = [
 
 export default function HomeScreen({ navigation }) {
   const [dailyQuote, setDailyQuote] = useState('');
+  const soundRef = useRef();
   useEffect(() => {
     const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
     setDailyQuote(randomQuote);
+   const loadAudio = async () => {
+         const { sound } = await Audio.Sound.createAsync(
+           require('../assets/magicalbg.mp3'),
+           { shouldPlay: true, isLooping: true }
+         );
+         soundRef.current = sound;  // Store sound instance in ref
+       };
 
+       loadAudio();
+
+       // Cleanup function when the component is unmounted
+       return () => {
+         if (soundRef.current) {
+           soundRef.current.unloadAsync();  // Stop and unload the audio when leaving the screen
+         }
+       };
   }, []);
 
-  // Animation for the button (up and down movement)
-   const buttonY = useSharedValue(0);  // Shared value for vertical movement
+    useFocusEffect(
+      React.useCallback(() => {
+        return () => {
+          if (soundRef.current) {
+            soundRef.current.unloadAsync();  // Stop the sound when leaving the screen
+          }
+        };
+      }, [])
+    );
 
-   // Start the animation when the component mounts
+   const buttonY = useSharedValue(0);
    useEffect(() => {
      buttonY.value = withRepeat(withTiming(-20, { duration: 800 }), -1, true);
    }, [buttonY]);
@@ -61,7 +85,6 @@ export default function HomeScreen({ navigation }) {
      <LottieView source={require('../assets/spark.json')} autoPlay loop style={styles.spark} />
       <Image source={require('../assets/Portion.png')} style={styles.image}/>
 
-      {/* Button */}
       <View style={styles.buttonContainer}>
               <Animated.View style={[styles.button, buttonAnimatedStyle]}>
                 <TouchableOpacity

@@ -18,17 +18,14 @@ const moods = [
     { id: 12, name: 'Peacefully chaotic', emoji: '🕊️', color: '#d0f5dd' },
 ];
 
-
 export default function MoodSelectorScreen({ navigation }) {
   const [selectedMood, setSelectedMood] = useState(null);
 
    const handleMoodSelect = async (mood) => {
       setSelectedMood(mood);
-
-      // Play the magical sound when a mood is selected
       try {
         const { sound } = await Audio.Sound.createAsync(
-          require('../assets/twinkle.mp3') // path to your sound file
+          require('../assets/twinkle.mp3')
         );
         await sound.playAsync();
       } catch (error) {
@@ -42,7 +39,7 @@ export default function MoodSelectorScreen({ navigation }) {
         // Play a different sound for the potion mix action
         try {
           const { sound } = await Audio.Sound.createAsync(
-            require('../assets/magic.mp3') // path to your potion mix sound file
+            require('../assets/magic.mp3')
           );
           await sound.playAsync();
         } catch (error) {
@@ -71,7 +68,7 @@ export default function MoodSelectorScreen({ navigation }) {
               <TouchableOpacity
                 style={[
                   styles.moodCard,
-                  { backgroundColor: mood.color + 'aa' }, // add some transparency
+                  { backgroundColor: mood.color + 'aa' },
                   selectedMood?.id === mood.id && styles.selectedCard,
                 ]}
                 onPress={() => handleMoodSelect(mood)}
@@ -87,22 +84,45 @@ export default function MoodSelectorScreen({ navigation }) {
           entering={FadeIn.duration(1000).delay(1000)}
           style={styles.buttonContainer}
         >
-          <TouchableOpacity
-            style={[styles.button, !selectedMood && styles.buttonDisabled]}
-            onPress={handleMixPotion}
-            disabled={!selectedMood}
-          >
-            <Text style={styles.buttonText}>🔮 Mix Potion</Text>
-          </TouchableOpacity>
-        </Animated.View>
+          <View style={styles.buttonsRow}>
+            {/* Mix Potion Button */}
+            <TouchableOpacity
+              style={[styles.button, !selectedMood && styles.buttonDisabled]}
+              onPress={handleMixPotion}
+              disabled={!selectedMood}
+            >
+              <Text style={styles.buttonText}>🔮 Mix Potion</Text>
+            </TouchableOpacity>
 
+            {/* Generate Magical Pet Button */}
+            <TouchableOpacity
+              style={[styles.button, !selectedMood && styles.buttonDisabled]}
+              onPress={async () => {
+                if (selectedMood) {
+                  try {
+                    const { sound } = await Audio.Sound.createAsync(
+                      require('../assets/pet.mp3')
+                    );
+                    await sound.playAsync();
+                  } catch (error) {
+                    console.error('Error playing sound:', error);
+                  }
+                  navigation.navigate('MagicalPet', { mood: selectedMood });
+                }
+              }}
+              disabled={!selectedMood}
+            >
+              <Text style={styles.buttonText}>🐾 Meet Magical Pet</Text>
+            </TouchableOpacity>
+          </View>
+        </Animated.View>
         </View>
 //    </ImageBackground>
   );
 }
 
 const { width } = Dimensions.get('window');
-const cardSize = (width - 60) / 2; // for two cards per row with spacing
+const cardSize = (width - 60) / 2;
 
 const styles = StyleSheet.create({
 //  background: {
@@ -172,9 +192,15 @@ const styles = StyleSheet.create({
     right: 0,
     alignItems: 'center',
   },
+  buttonsRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    width: '100%',
+    paddingHorizontal: 20,
+  },
   button: {
     backgroundColor: '#9B1313',
-    paddingHorizontal: 30,
+    paddingHorizontal: 15,
     paddingVertical: 16,
     borderRadius: 25,
     elevation: 6,
@@ -188,7 +214,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: '#fff',
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: 'bold',
     textTransform: 'uppercase',
   },

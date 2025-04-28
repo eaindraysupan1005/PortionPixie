@@ -2,9 +2,15 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, Text, ScrollView, TouchableOpacity, ImageBackground } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from '@react-navigation/native';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 export default function FavoritePotionScreen({ navigation }) {
   const [favorites, setFavorites] = useState([]);
+  const colors = [
+        '#ffcce3', '#b9d6f2', '#ffb7d5', , '#c7f5c0',
+        '#d8c5e5', '#fffab0', '#e2d8c4', '#cbb4f3',
+        '#fcdde8', '#f6f2ba', '#c6e2f5', '#d0f5dd'
+      ];
 
   useFocusEffect(
     React.useCallback(() => {
@@ -23,20 +29,28 @@ export default function FavoritePotionScreen({ navigation }) {
     }
   };
 
-  return (
-    <ImageBackground
-      source={require('../assets/pink.jpg')}
-      style={styles.background}
-      resizeMode="cover"
-    >
-      <ScrollView contentContainerStyle={styles.container}>
-        <Text style={styles.title}>🔮 Your Favorite Potions</Text>
+  const handleRemoveFavorite = async (potionName) => {
+      try {
+        const updatedFavorites = favorites.filter(fav => fav.name !== potionName);
+        await AsyncStorage.setItem('favorites', JSON.stringify(updatedFavorites));
+        setFavorites(updatedFavorites);
+      } catch (error) {
+        console.error('Error removing favorite:', error);
+      }
+    };
 
+  return (
+      <View style={styles.container}>
+        <ScrollView contentContainerStyle={styles.scrollContainer}  showsVerticalScrollIndicator={false}>
+        <Text style={styles.title}>🔮 Your Favorite Potions</Text>
         {favorites.length === 0 ? (
           <Text style={styles.emptyText}> No favorites yet! Go brew some!🧪</Text>
         ) : (
           favorites.map((potion, index) => (
-            <View key={index} style={styles.card}>
+            <View key={index} style={[styles.card, { backgroundColor: colors[index % colors.length] }]}>
+              <TouchableOpacity onPress={() => handleRemoveFavorite(potion.name)} style={styles.removeButton}>
+              <MaterialCommunityIcons name="delete" size={24} color="#9B1313" />
+            </TouchableOpacity>
               <Text style={styles.potionName}>✨ {potion.name}</Text>
 
               <Text style={styles.sectionTitle}>🧪 Ingredients:</Text>
@@ -51,22 +65,20 @@ export default function FavoritePotionScreen({ navigation }) {
         )}
 
         <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
-          <Text style={styles.backButtonText}>🦄 Go Back</Text>
+          <Text style={styles.backButtonText}>🔮 Go Back</Text>
         </TouchableOpacity>
       </ScrollView>
-    </ImageBackground>
+      </View>
   );
 }
 
 const styles = StyleSheet.create({
-  background: {
-    flex: 1,
-    width: '100%',
-    height: '100%',
-  },
   container: {
+  width: '100%',
+  height: '100%',
     padding: 20,
     paddingBottom: 10,
+    backgroundColor: '#FFA896',
   },
   title: {
     fontSize: 24,
@@ -74,10 +86,7 @@ const styles = StyleSheet.create({
     paddingTop: 40,
     marginBottom: 20,
     fontWeight: 'bold',
-    color: '#fff',
-    textShadowColor: 'rgba(255, 255, 255, 0.5)',
-    textShadowOffset: { width: 0, height: 0 },
-    textShadowRadius: 8,
+    color: '#9B1313',
   },
   card: {
     backgroundColor: '#ffccf9cc', // slightly transparent card
@@ -85,12 +94,25 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     paddingVertical: 10,
     marginBottom: 10,
+    borderWidth: 1,
+    borderColor: '#555',
   },
+   removeButton: {
+      position: 'absolute',
+      top: 10,
+      right: 10,
+      backgroundColor: 'transparent',
+      borderRadius: 20,
+      borderWidth: 1,
+      padding: 5,
+      borderColor: '#9B1313',
+    },
   potionName: {
     fontSize: 20,
     fontWeight: 'bold',
     color: '#660033',
     marginBottom: 10,
+    marginTop: 30,
   },
   sectionTitle: {
     fontSize: 16,
@@ -102,7 +124,7 @@ const styles = StyleSheet.create({
   ingredient: {
     marginLeft: 5,
     color: '#660033',
-    marginBottom: 10,
+    marginBottom:5,
   },
   tale: {
     fontStyle: 'italic',
@@ -115,8 +137,8 @@ const styles = StyleSheet.create({
     color: '#d1005d',
   },
   backButton: {
-    marginTop: 30,
-    backgroundColor: '#ff7eb9',
+    marginTop: 10,
+    backgroundColor: '#9B1313',
     paddingHorizontal: 15,
     paddingVertical: 10,
     borderRadius: 20,

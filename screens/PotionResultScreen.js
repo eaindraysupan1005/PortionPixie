@@ -1,14 +1,17 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, ScrollView ,Image} from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity, ScrollView ,Image,  ImageBackground } from 'react-native';
 import { Audio } from 'expo-av'; // Import Audio from expo-av
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as MediaLibrary from 'expo-media-library';
-import { AntDesign } from '@expo/vector-icons'; // Love icon
+import { AntDesign } from '@expo/vector-icons';
+import LottieView from 'lottie-react-native';
+import { captureRef } from 'react-native-view-shot';
 
 export default function PotionResultScreen({ route, navigation }) {
   const { mood } = route.params;
   const [potion, setPotion] = useState(null);
   const [isFavorite, setIsFavorite] = useState(false);
+  const cardRef = useRef();
 
   const Images = [
     require('../assets/card.jpg'),
@@ -18,10 +21,15 @@ export default function PotionResultScreen({ route, navigation }) {
     require('../assets/card4.jpg'),
     require('../assets/card5.jpg'),
     require('../assets/card6.jpg'),
+    require('../assets/card7.jpg'),
     require('../assets/card3.webp'),
+  ];
+  const colors = [ '#ffcce3','#ffb7d5','#b9d6f2','#c7f5c0',
+  '#d8c5e5','#f5e68d','#e2d8c4','#cbb4f3','#fcdde8','#f6f2ba','#c6e2f5','#d0f5dd'
   ];
 
 const [selectedImage, setSelectedImage] = useState(null);
+const [selectedColor, setSelectedColor] = useState(null);
 
   const loadPotionData = async () => {
     try {
@@ -29,11 +37,24 @@ const [selectedImage, setSelectedImage] = useState(null);
       const moodPotions = potionData[mood.name];
       const randomPotion = moodPotions[Math.floor(Math.random() * moodPotions.length)];
       const randomImage = Images[Math.floor(Math.random() * Images.length)];
+      const randomColor = colors[Math.floor(Math.random() * colors.length)];
       setPotion(randomPotion);
        setSelectedImage(randomImage);
+       setSelectedColor(randomColor);
       setIsFavorite(false); // Reset favorite state
     } catch (error) {
       console.error('Error reading potion data:', error);
+    }
+  };
+
+  const playSoundAndNavigate = async (soundFile, screenName) => {
+    try {
+      const { sound } = await Audio.Sound.createAsync(soundFile);
+      await sound.playAsync();
+      navigation.navigate(screenName);
+    } catch (error) {
+      console.error('Error playing sound and navigating:', error);
+      navigation.navigate(screenName); // Fallback: still navigate
     }
   };
 
@@ -65,13 +86,22 @@ const [selectedImage, setSelectedImage] = useState(null);
     try {
       const existing = await AsyncStorage.getItem('favorites');
       let favorites = existing ? JSON.parse(existing) : [];
-      favorites.push(potion);
-      await AsyncStorage.setItem('favorites', JSON.stringify(favorites));
+
+      const alreadyExists = favorites.some(fav => fav.name === potion.name);
+
+      if (!alreadyExists) {
+        favorites.push(potion);
+        await AsyncStorage.setItem('favorites', JSON.stringify(favorites));
+        setIsFavorite(true);
+      } else {
       setIsFavorite(true);
+        console.log('Potion already exists in favorites!');
+      }
     } catch (error) {
       console.error('Error saving favorite potion:', error);
     }
   };
+
 
   if (!potion) {
     return (
@@ -84,17 +114,15 @@ const [selectedImage, setSelectedImage] = useState(null);
   return (
     <ScrollView style={styles.container}>
       <View style={styles.cardWrapper}>
-        <View style={styles.card}>
+        <View ref={cardRef} style={[styles.card, { backgroundColor: selectedColor }]}>
           {/* Love Icon */}
           <TouchableOpacity onPress={handleFavorite} style={styles.loveIcon}>
             <AntDesign name={isFavorite ? "heart" : "hearto"} size={24} color="#660033" />
           </TouchableOpacity>
 
           <Text style={styles.potionName}>✨ {potion.name} ✨</Text>
-
             {selectedImage && (
-                      <Image source={selectedImage} style={styles.cardImage} />
-                    )}
+                      <Image source={selectedImage} style={styles.cardImage} />                    )}
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>🧪 Ingredients:</Text>
             {potion.ingredients.map((ingredient, index) => (
@@ -106,10 +134,10 @@ const [selectedImage, setSelectedImage] = useState(null);
 
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>📜 Magical Tale:</Text>
-            <Text style={styles.tale}>
-              🪄 {potion.tale} 🪄
+            <Text style={styles.tale}> 🪄 {potion.tale} 🪄
             </Text>
-          </View>
+           </View>
+           <LottieView source={require('../assets/wand.json')} autoPlay loop style={styles.wand} />
         </View>
       </View>
 
@@ -117,15 +145,13 @@ const [selectedImage, setSelectedImage] = useState(null);
       <View style={styles.buttonContainer}>
         <TouchableOpacity
           style={[styles.button, styles.primaryButton]}
-          onPress={() => navigation.navigate('MoodSelector')}
-        >
-          <Text style={styles.buttonText}>🦄 Brew Another</Text>
+          onPress={() => playSoundAndNavigate(require('../assets/magic.mp3'), 'MoodSelector')}        >
+          <Text style={styles.buttonText}>🔮 Brew Another</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
           style={[styles.button, styles.secondaryButton]}
-          onPress={handleSave}
-        >
+          onPress={handleSave}  >
           <Text style={styles.buttonText}>Save to Phone</Text>
         </TouchableOpacity>
       </View>
@@ -134,12 +160,10 @@ const [selectedImage, setSelectedImage] = useState(null);
       <View style={styles.viewFavButtonContainer}>
         <TouchableOpacity
           style={[styles.button, styles.viewFavButton]}
-          onPress={() => navigation.navigate('FavoritePotions')}
-        >
-          <Text style={styles.buttonText}>❤️ View Favorite Potions</Text>
+          onPress={() => playSoundAndNavigate(require('../assets/magic0.mp3'), 'FavoritePotions')} >
+          <Text style={styles.buttonText}>🤍 View Favorite Potions</Text>
         </TouchableOpacity>
       </View>
-
     </ScrollView>
   );
 }
@@ -151,7 +175,8 @@ const styles = StyleSheet.create({
   },
   potionName: {
     fontSize: 22,
-    color: '#000',
+    color: '#9B1313',
+    fontWeight: 'bold',
     textAlign: 'center',
     marginVertical: 15,
     fontFamily: 'serif',
@@ -160,7 +185,7 @@ const styles = StyleSheet.create({
     textShadowRadius: 10,
   },
   section: {
-    marginBottom: 30,
+    marginBottom: 20,
   },
   sectionTitle: {
     fontSize: 20,
@@ -179,6 +204,13 @@ const styles = StyleSheet.create({
     color: '#000',
     lineHeight: 26,
     fontStyle: 'italic',
+  },
+  wand:{
+  width: 200,
+  height: 80,
+  position: 'absolute',
+  top: '33%',
+  right: 0,
   },
   buttonContainer: {
     flexDirection: 'row',
@@ -218,7 +250,7 @@ const styles = StyleSheet.create({
   cardWrapper: {
     borderRadius: 10,
     overflow: 'hidden',
-    marginTop: 100,
+    marginTop: 60,
     marginBottom: 5,
     shadowColor: '#fff',
     shadowOpacity: 0.5,
@@ -230,7 +262,7 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderRadius: 20,
     borderColor: '#660033',
-    backgroundColor: '#FFA896',
+//    backgroundColor: '#FFA896',
     shadowColor: '#000',
     shadowOpacity: 0.9,
     shadowRadius: 20,
@@ -263,7 +295,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   viewFavButton: {
-    backgroundColor: '#ff7eb9',
+    backgroundColor: '#d14182',
     paddingHorizontal: 20,
     paddingVertical: 12,
     borderRadius: 25,

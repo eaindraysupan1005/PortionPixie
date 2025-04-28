@@ -1,0 +1,86 @@
+{
+  "Lazy but adorable": {
+    "name": "Snugglefin the Dreamy Seal",
+    "favorite_item": "Cloud-soft pillow",
+    "mini_mission": "Nap in the coziest corner you can find today.",
+    "catchphrase": "Yawn first, conquer later!",
+    "temperament": "Sleepy and sweet"
+  },
+  "In love (and delusional)": {
+    "name": "Lovelace the Heartbound Bunny",
+    "favorite_item": "Rose-tinted spectacles",
+    "mini_mission": "Write a cheesy love letter to your future self.",
+    "catchphrase": "Hopeless? Nah, just hopeful!",
+    "temperament": "Dreamy and affectionate"
+  },
+  "Existentially confused": {
+    "name": "Whimsy the Wandering Owl",
+    "favorite_item": "Moonlit compass",
+    "mini_mission": "Stargaze for five minutes and wonder big wonders.",
+    "catchphrase": "Who... am I, really?",
+    "temperament": "Thoughtful and dazed"
+  },
+  "Ready to conquer": {
+    "name": "Valorstride the Skyward Giraffe",
+    "favorite_item": "Crown of Courage",
+    "mini_mission": "Tackle a task you've been avoiding, even a small one!",
+    "catchphrase": "Stand tall, dream bigger!",
+    "temperament": "Brave and ambitious"
+  },
+  "Soft & sad but hopeful": {
+    "name": "Mistral the Gentle Cat",
+    "favorite_item": "Patchwork comfort quilt",
+    "mini_mission": "List three little things you're grateful for today.",
+    "catchphrase": "Soft hearts are the bravest hearts.",
+    "temperament": "Tender and quietly strong"
+  },
+  "Pure chaos energy": {
+    "name": "Flickerwhisk the Wild Fox",
+    "favorite_item": "Bag of endless surprises",
+    "mini_mission": "Do something unexpected just for fun!",
+    "catchphrase": "Why not cause a little sparkle-chaos?",
+    "temperament": "Mischievous and electric"
+  },
+  "Cottagecore cozy": {
+    "name": "Meadowmuffin the Whimsical Cow",
+    "favorite_item": "Sun-dappled flower crown",
+    "mini_mission": "Take a peaceful walk in nature—or near a plant!",
+    "catchphrase": "Slow down and smell the wildflowers.",
+    "temperament": "Gentle and nurturing"
+  },
+  "Cosmic dreamer": {
+    "name": "Starwhisp the Dreamicorn",
+    "favorite_item": "Bottle of caught stardust",
+    "mini_mission": "Write down one impossible dream. Believe it a little.",
+    "catchphrase": "Float beyond the stars!",
+    "temperament": "Wonder-filled and ethereal"
+  },
+  "Spooky but cute": {
+    "name": "Booquack the Spectral Duck",
+    "favorite_item": "Haunted rubber ducky",
+    "mini_mission": "Light a candle and tell yourself a spooky story.",
+    "catchphrase": "Cute enough to haunt!",
+    "temperament": "Playful and eerie"
+  },
+  "Starstruck & sparkly": {
+    "name": "Twinklesnout the Glittering Reindeer",
+    "favorite_item": "Constellation map",
+    "mini_mission": "Wear something sparkly—even if it's just socks!",
+    "catchphrase": "Shine like the whole galaxy's watching!",
+    "temperament": "Radiant and excitable"
+  },
+  "Overthinking everything": {
+    "name": "Ponderpaw the Patient Capybara",
+    "favorite_item": "Notebook of infinite thoughts",
+    "mini_mission": "Pause and breathe deeply for one full minute.",
+    "catchphrase": "Overthinking? Overachieving, maybe.",
+    "temperament": "Calm but pensive"
+  },
+  "Peacefully chaotic": {
+    "name": "Snowdrift the Zen Polar Bear",
+    "favorite_item": "Mossy meditation stone",
+    "mini_mission": "Let one thing today be perfectly imperfect.",
+    "catchphrase": "Balance the whirlwinds with a wink.",
+    "temperament": "Serene yet unpredictable"
+  }
+}
