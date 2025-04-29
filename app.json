@@ -4,22 +4,22 @@
     "slug": "PortionPixie",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/app-icon.png",
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
     "entryPoint": "./App.js",
     "splash": {
-      "image": "./assets/icon.png",
+      "image": "./assets/app-icon.png",
       "resizeMode": "contain",
-      "backgroundColor": "#a7d1ce"
+      "backgroundColor": "#FFA896"
     },
     "ios": {
       "supportsTablet": true
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/icon.png",
-        "backgroundColor": "#a7d1ce"
+        "foregroundImage": "./assets/app-icon.png",
+        "backgroundColor": "#FFA896"
       },
       "package": "com.irene_bluesea.PortionPixie"
     },

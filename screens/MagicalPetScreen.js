@@ -4,7 +4,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as MediaLibrary from 'expo-media-library';
 import { captureRef } from 'react-native-view-shot';
 import { AntDesign } from '@expo/vector-icons';
-//import LottieView from 'lottie-react-native';
 import petData from '../assets/petData.json';
 import { Audio } from 'expo-av';
 
@@ -173,8 +172,6 @@ const playSoundAndNavigate = async (soundFile, screenName) => {
                      </View>
                    </View>
                  )}
-
-//          <LottieView source={require('../assets/mushroom.json')} autoPlay loop style={styles.wand} />
         </View>
       </View>
 
