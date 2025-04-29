@@ -9,21 +9,27 @@
     "newArchEnabled": true,
     "entryPoint": "./App.js",
     "splash": {
-      "image": "./assets/splash-icon.png",
+      "image": "./assets/icon.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#a7d1ce"
     },
     "ios": {
       "supportsTablet": true
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
-      }
+        "foregroundImage": "./assets/icon.png",
+        "backgroundColor": "#a7d1ce"
+      },
+      "package": "com.irene_bluesea.PortionPixie"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "855ff4f7-8903-404c-93fd-7f4e89601208"
+      }
     }
   }
 }

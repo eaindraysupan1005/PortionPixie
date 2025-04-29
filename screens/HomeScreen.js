@@ -76,7 +76,7 @@ export default function HomeScreen({ navigation }) {
 
     <Text style={styles.title}>
      <LottieView source={require('../assets/butterfly.json')} autoPlay loop
-           style={styles.butterfly}  />PortionPixie
+           style={styles.butterfly}  />PotionPixie
      <LottieView source={require('../assets/butterfly.json')} autoPlay loop style={styles.butterfly} />
     </Text>
       <Text style={styles.quote}>

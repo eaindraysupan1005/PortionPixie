@@ -4,7 +4,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as MediaLibrary from 'expo-media-library';
 import { captureRef } from 'react-native-view-shot';
 import { AntDesign } from '@expo/vector-icons';
-import LottieView from 'lottie-react-native';
+//import LottieView from 'lottie-react-native';
 import petData from '../assets/petData.json';
 import { Audio } from 'expo-av';
 
@@ -174,7 +174,7 @@ const playSoundAndNavigate = async (soundFile, screenName) => {
                    </View>
                  )}
 
-          <LottieView source={require('../assets/mushroom.json')} autoPlay loop style={styles.wand} />
+//          <LottieView source={require('../assets/mushroom.json')} autoPlay loop style={styles.wand} />
         </View>
       </View>
 
@@ -259,13 +259,13 @@ const styles = StyleSheet.create({
     height: 240,
     width: 240,
   },
-  wand: {
-    width: 200,
-    height: 200,
-    position: 'absolute',
-    top: '30%',
-    right: -25,
-  },
+//  wand: {
+//    width: 200,
+//    height: 200,
+//    position: 'absolute',
+//    top: '35%',
+//    right: -35,
+//  },
   loveIcon: {
     position: 'absolute',
     top: 5,
